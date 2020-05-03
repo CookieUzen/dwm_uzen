@@ -983,6 +983,10 @@ drawbar(Monitor *m)
 
 	if ((w = m->ww - tw - stw - x) > bh) {
 		if (n > 0) {
+			int mid = (m->ww - TEXTW(m->sel->name)) / 2 - x;
+			/* make sure name will not overlap on tags even when it is very long */
+			mid = mid >= lrpad / 2 ? mid : lrpad / 2;
+
 			for (c = m->clients; c; c = c->next) {
 				if (!ISVISIBLE(c))
 					continue;
@@ -993,7 +997,7 @@ drawbar(Monitor *m)
 				else
 					scm = SchemeNorm;
 				drw_setscheme(drw, scheme[scm]);
-				drw_text(drw, x, 0, (1.0 / (double)n) * w, bh, lrpad / 2, c->name, 0);
+				drw_text(drw, x, 0, (1.0 / (double)n) * w, bh, mid, c->name, 0);
 				x += (1.0 / (double)n) * w;
 			}
 		} else {
